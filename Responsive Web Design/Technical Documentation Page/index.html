@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>TypeScript Documentation</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="./style.css"
+    />
+  </head>
+  <body>
+    <main id="main-doc">
+      <nav id="navbar">
+        <header>
+          TypeScript Documentaion <br /><br />
+          The Basics
+        </header>
+        <ul>
+          <li class="navbar-item">
+            <a
+              class="nav-link"
+              href="#Introduction"
+              >Introduction</a
+            >
+          </li>
+          <li class="navbar-item">
+            <a
+              class="nav-link"
+              href="#Static_type-checking"
+              >Static type-checking</a
+            >
+          </li>
+          <li class="navbar-item">
+            <a
+              class="nav-link"
+              href="#Non-exception_Failures"
+              >Non-exception Failures</a
+            >
+          </li>
+          <li class="navbar-item">
+            <a
+              class="nav-link"
+              href="#Types_for_Tooling"
+              >Types for Tooling</a
+            >
+          </li>
+          <li class="navbar-item">
+            <a
+              class="nav-link"
+              href="#Explicit_Types"
+              >Explicit Types</a
+            >
+          </li>
+          <li class="navbar-item">
+            <a
+              class="nav-link"
+              href="#Erased_Types"
+              >Erased Types</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <div class="main-doc-description">
+        <div class="container">
+          <section
+            class="main-section"
+            id="Introduction"
+          >
+            <header>Introduction</header>
+            <p>
+              Each and every value in JavaScript has a set of behaviors you can
+              observe from running different operations. That sounds abstract,
+              but as a quick example, consider some operations we might run on a
+              variable named <code>message</code>.
+            </p>
+            <pre class="language-typescript">
+                <code>
+// Accessing the property 'toLowerCase'
+// on 'message' and then calling it
+message.toLowerCase();
+// Calling 'message'
+message();</code>
+            </pre>
+
+            <p>
+              If we break this down, the first runnable line of code accesses a
+              property called <code>toLowerCase</code> and then calls it. The
+              second one tries to call <code>message</code> directly.
+            </p>
+            <p>
+              But assuming we don’t know the value of <code>message</code> - and
+              that’s pretty common - we can’t reliably say what results we’ll
+              get from trying to run any of this code. The behavior of each
+              operation depends entirely on what value we had in the first
+              place.
+            </p>
+            <ul>
+              <li>Is <code>message</code> callable?</li>
+              <li>
+                Does it have a property called <code>toLowerCase</code> on it?
+              </li>
+              <li>If it does, is <code>toLowerCase</code> even callable?</li>
+              <li>
+                If both of these values are callable, what do they return?
+              </li>
+              <li>
+                The fifth one should be here, but it isn't 'cause i need to fill
+                the gaps of the task
+              </li>
+            </ul>
+          </section>
+          <section
+            class="main-section"
+            id="Static_type-checking"
+          >
+            <header>Static type-checking</header>
+            <p>
+              Think back to that <code>TypeError</code> we got earlier from
+              trying to call a <code>string</code> as a function.
+              <i>Most people</i>
+              don’t like to get any sorts of errors when running their code -
+              those are considered bugs! And when we write new code, we try our
+              best to avoid introducing new bugs.
+            </p>
+            <p>
+              If we add just a bit of code, save our file, re-run the code, and
+              immediately see the error, we might be able to isolate the problem
+              quickly; but that’s not always the case. We might not have tested
+              the feature thoroughly enough, so we might never actually run into
+              a potential error that would be thrown! Or if we were lucky enough
+              to witness the error, we might have ended up doing large
+              refactorings and adding a lot of different code that we’re forced
+              to dig through.
+            </p>
+            <p>
+              Ideally, we could have a tool that helps us find these bugs
+              <i>before</i> our code runs. That’s what a static type-checker
+              like TypeScript does. <i>Static types systems</i> describe the
+              shapes and behaviors of what our values will be when we run our
+              programs. A type-checker like TypeScript uses that information and
+              tells us when things might be going off the rails.
+            </p>
+            <pre class="language-typescript">
+                <code>
+const message = "hello!";
+message();
+This expression is not callable.
+Type 'String' has no call signatures.</code>
+            </pre>
+          </section>
+          <section
+            class="main-section"
+            id="Non-exception_Failures"
+          >
+            <header>Non-exception Failures</header>
+            <p>
+              So far we’ve been discussing certain things like runtime errors -
+              cases where the JavaScript runtime tells us that it thinks
+              something is nonsensical. Those cases come up because the
+              ECMAScript specification has explicit instructions on how the
+              language should behave when it runs into something unexpected.
+            </p>
+            <p>
+              For example, the specification says that trying to call something
+              that isn’t callable should throw an error. Maybe that sounds like
+              “obvious behavior”, but you could imagine that accessing a
+              property that doesn’t exist on an object should throw an error
+              too. Instead, JavaScript gives us different behavior and returns
+              the value <code>undefined</code>:
+            </p>
+            <pre class="language-typescript">
+                <code>
+const user = {
+    name: "Daniel",
+    age: 26,
+};
+user.location; // returns undefined
+                </code>
+            </pre>
+          </section>
+          <section
+            class="main-section"
+            id="Types_for_Tooling"
+          >
+            <header>Types for Tooling</header>
+            <p>
+              TypeScript can catch bugs when we make mistakes in our code.
+              That’s great, but TypeScript can <i>also</i> prevent us from
+              making those mistakes in the first place.
+            </p>
+            <p>
+              The type-checker has information to check things like whether
+              we’re accessing the right properties on variables and other
+              properties. Once it has that information, it can also start
+              <i>suggesting</i> which properties you might want to use.
+            </p>
+            <p>
+              That means TypeScript can be leveraged for editing code too, and
+              the core type-checker can provide error messages and code
+              completion as you type in the editor. That’s part of what people
+              often refer to when they talk about tooling in TypeScript.
+            </p>
+            <pre class="language-typescript">
+                <code>
+import express from "express";
+const app = express();
+
+app.get("/", function (req, res) {
+    res.send
+    // here should be tooltip
+});
+
+app.listen(3000);
+                </code>
+            </pre>
+            <p>
+              TypeScript takes tooling seriously, and that goes beyond
+              completions and errors as you type. An editor that supports
+              TypeScript can deliver “quick fixes” to automatically fix errors,
+              refactorings to easily re-organize code, and useful navigation
+              features for jumping to definitions of a variable, or finding all
+              references to a given variable. All of this is built on top of the
+              type-checker and is fully cross-platform, so it’s likely that your
+              favorite editor has TypeScript support available.
+            </p>
+          </section>
+          <section
+            class="main-section"
+            id="Explicit_Types"
+          >
+            <header>Explicit Types</header>
+            <p>
+              Up until now, we haven’t told TypeScript what
+              <code>person</code> or <code>date</code> are. Let’s edit the code
+              to tell TypeScript that <code>person</code> is a
+              <code>string</code>, and that <code>date</code> should be a
+              <code>Date</code> object. We’ll also use the
+              <code>toDateString()</code> method on <code>date</code>.
+            </p>
+            <pre class="language-typescript">
+                <code>
+function greet(person: string, date: Date) {
+    console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+}
+                </code>
+            </pre>
+            <p></p>
+          </section>
+          <section
+            class="main-section"
+            id="Erased_Types"
+          >
+            <header>Erased Types</header>
+            <p>
+              Let’s take a look at what happens when we compile the above
+              function greet with tsc to output JavaScript:
+            </p>
+            <pre class="language-typescript">
+                <code>
+"use strict";
+function greet(person, date) {
+    console.log("Hello ".concat(person, ", today is ").concat(date.toDateString(), "!"));
+}
+greet("Maddison", new Date());
+                </code>
+            </pre>
+          </section>
+        </div>
+      </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  </body>
+</html>
